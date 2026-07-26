@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIVS-1 — Agent Inference Value Standard</title>
 <link rel="canonical" href="https://aivs-1.org/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23946213'/%3E%3Ctext x='16' y='23.5' font-family='Helvetica,Arial,sans-serif' font-size='18' font-weight='700' letter-spacing='-1' fill='%23ffffff' text-anchor='middle'%3EIV%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23946213'/%3E%3Ctext x='16' y='23.5' font-family='Helvetica,Arial,sans-serif' font-size='18' font-weight='700' letter-spacing='-1' fill='%23ffffff' text-anchor='middle'%3EIV%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#946213">
 <meta name="description" content="AIVS-1 is the open standard for agent inference value. The Inference Value Record separates proof that an inference occurred from what an independent party has staked on it. CC0 — free to implement.">
 <meta name="keywords" content="AI agent inference value, AIVS-1, inference value standard, revealed value, proof of inference, attestation, TEE, zero-knowledge, AIS-1, AES-1, AAS-1, AIPS-1, Kadikoy">
 <meta property="og:title" content="AIVS-1 — Agent Inference Value Standard">
@@ -102,10 +105,10 @@ h3{font-family:var(--body);font-weight:500;font-size:1rem;margin-bottom:9px}
 .hero::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(760px 420px at 84% 4%,rgba(160,118,31,.07),transparent 66%),
-    radial-gradient(620px 380px at 4% 92%,rgba(51,96,127,.055),transparent 68%);
+    radial-gradient(760px 400px at 50% -6%,rgba(148,98,19,.085),transparent 68%),
+    radial-gradient(680px 380px at 50% 104%,rgba(58,90,114,.06),transparent 70%);
 }
-.hero-in{position:relative;z-index:2}
+.hero-in{position:relative;z-index:2;text-align:center}
 .status{
   display:inline-flex;align-items:center;gap:11px;border:1px solid var(--line);
   padding:7px 15px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
@@ -114,13 +117,13 @@ h3{font-family:var(--body);font-weight:500;font-size:1rem;margin-bottom:9px}
 .dot{width:6px;height:6px;background:var(--val);border-radius:50%;box-shadow:0 0 0 3px var(--val-dim)}
 h1{
   font-family:var(--display);font-weight:600;font-size:clamp(2.3rem,5.2vw,3.65rem);
-  line-height:1.11;letter-spacing:-.028em;max-width:17ch;margin-bottom:34px;color:var(--ink);
+  line-height:1.11;letter-spacing:-.028em;max-width:19ch;margin:0 auto 34px;color:var(--ink);
 }
 h1 em{font-style:italic;font-weight:500;color:var(--val)}
-.hero-lead{font-size:1.14rem;max-width:60ch;color:var(--ink-2);line-height:1.68}
+.hero-lead{font-size:1.14rem;max-width:60ch;color:var(--ink-2);line-height:1.68;margin:0 auto}
 .hero-lead + .hero-lead{margin-top:20px}
 .hero-lead b{color:var(--ink);font-weight:500}
-.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:42px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:42px;justify-content:center}
 .btn{
   display:inline-flex;align-items:center;gap:9px;padding:13px 24px;text-decoration:none;
   font-family:var(--mono);font-size:12px;letter-spacing:.11em;text-transform:uppercase;
@@ -130,7 +133,7 @@ h1 em{font-style:italic;font-weight:500;color:var(--val)}
 .btn.ghost{background:none;color:var(--val-deep)}
 .btn.ghost:hover{background:var(--val-dim);color:var(--val-deep)}
 .chips{display:flex;flex-wrap:wrap;gap:0;margin-top:66px;border-top:1px solid var(--line)}
-.chip{flex:1 1 200px;padding:22px 26px 22px 0;border-right:1px solid var(--line)}
+.chip{flex:1 1 200px;padding:22px 26px;border-right:1px solid var(--line);text-align:center}
 .chip:last-child{border-right:none}
 .chip b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--val);margin-bottom:7px;font-weight:500}
@@ -346,7 +349,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 60px;background:var(--pap
   .plot{grid-template-columns:76px 1fr}
   .y-lab span,.x-lab span{display:none}
   .cell{font-size:9.5px}
-  .chip{flex-basis:100%;border-right:none;border-bottom:1px solid var(--line);padding-right:0}
+  .chip{flex-basis:100%;border-right:none;border-bottom:1px solid var(--line)}
   .chip:last-child{border-bottom:none}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
