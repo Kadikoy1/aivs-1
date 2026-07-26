@@ -1,0 +1,43 @@
+{
+  "aivs": "0.1",
+  "recordId": "01J2B5C8D0E2F4G6H8J0K2M4N6",
+  "producerRef": "did:ais1:base:payagent-001",
+  "subjectRef": "https://logs.payagent.ai/2026/07/aas1-01J2B5C8D0E2F4G6H8J0K2M4N7.json",
+  "occurrence": {
+    "tier": "A1",
+    "evidenceRef": "ipfs://bafybeigsponsorstakeattestationexample0001",
+    "modelIdentityHash": "sha256-7c6b5a4938271605f4e3d2c1b0a99887766554433221100ffeeddccbbaa9988",
+    "attestationService": "aws-nitro-enclaves"
+  },
+  "mintingEnclaveRef": "aes1:base:0x4f3edf8c1a2b9d7e6c5b4a39281706f5e4d3c2b1",
+  "timestamp": "2026-07-02T08:30:00Z",
+  "aas1RecordRef": "https://logs.payagent.ai/2026/07/aas1-01J2B5C8D0E2F4G6H8J0K2M4N8.json",
+  "revealedValue": [
+    {
+      "signal": "posted_stake",
+      "components": {
+        "amount": {
+          "currency": "USD",
+          "value": "50000.00"
+        },
+        "custodyRef": "https://accounts.example-trustee.bm/segregated/kadikoy-payagent-01",
+        "forfeitureConditionRef": "https://kadikoy.bm/stakes/2026-q3-payagent-terms",
+        "lockedUntil": "2027-07-02T00:00:00Z"
+      },
+      "committerRef": "did:ais1:sponsor:kadikoy-bm-202302362",
+      "relatedParty": true,
+      "irrevocable": true,
+      "triggerAuthority": "did:ais1:sponsor:auditor-firm-bermuda-example",
+      "evidenceRef": "https://accounts.example-trustee.bm/segregated/kadikoy-payagent-01.json",
+      "note": "Sponsor stake behind its own agent. Related party, but segregated with an auditor as trigger authority — qualifies to T1. T2 would need an unrelated signal too."
+    }
+  ],
+  "transferTier": "T1",
+  "signature": {
+    "alg": "EdDSA",
+    "hashAlg": "SHA-256",
+    "canonicalisation": "JCS",
+    "keyRef": "did:ais1:base:payagent-001#key-1",
+    "value": "z5RtY8uI2oP4aS6dF9gH1jK3lZ7xC0vB2nM5qW8eR1tY4uI7oP0aS3dF6gH9jK2l"
+  }
+}

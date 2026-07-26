@@ -1,0 +1,43 @@
+{
+  "aivs": "0.1",
+  "recordId": "01J2C6D9E1F3G5H7J9K1M3N5P8",
+  "producerRef": "did:ais1:base:treasury-agent-011",
+  "subjectRef": "https://logs.example.com/2026/07/aas1-chain-b.json",
+  "occurrence": {
+    "tier": "A1",
+    "evidenceRef": "ipfs://bafybeigchainexampleattestation000b",
+    "modelIdentityHash": "sha256-3f2e1d0c9b8a7766554433221100ffeeddccbbaa998877665544332211aabbcc"
+  },
+  "mintingEnclaveRef": "aes1:base:0x1122334455667788990011223344556677889900",
+  "timestamp": "2026-07-08T13:45:10Z",
+  "aas1RecordRef": "https://logs.example.com/2026/07/aas1-chain-b-ivr.json",
+  "revealedValue": [
+    {
+      "signal": "downstream_reliance",
+      "components": {
+        "amount": {
+          "currency": "USD",
+          "value": "100000.00"
+        },
+        "actionRef": "https://logs.example.com/2026/07/release-0117.json",
+        "relianceStatementRef": "https://logs.example.com/2026/07/reliance-stmt-0117.json"
+      },
+      "committerRef": "did:ais1:sponsor:example-bank-plc",
+      "relatedParty": false,
+      "irrevocable": true,
+      "triggerAuthority": "did:ais1:sponsor:auditor-firm-bermuda-example",
+      "commitmentId": "commit:example-bank:2026-07-payment-0117",
+      "share": "0.40",
+      "evidenceRef": "https://logs.example.com/2026/07/release-0117.json",
+      "note": "Decision to release in reliance on the screening. Sibling record carries the other 60%."
+    }
+  ],
+  "transferTier": "T1",
+  "signature": {
+    "alg": "EdDSA",
+    "hashAlg": "SHA-256",
+    "canonicalisation": "JCS",
+    "keyRef": "did:ais1:base:treasury-agent-011#key-1",
+    "value": "z8Nq3Wr6Et9Yu2Io5Pa8Sd1Fg4Hj7Kl0Zx3Cv6Bn9Mq2Wr5Et8Yu1Io4Pa7Sd0Fg"
+  }
+}

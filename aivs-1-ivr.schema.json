@@ -1,0 +1,531 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aivs-1.org/schemas/aivs-1-ivr.schema.json",
+  "title": "AIVS-1 Inference Value Record",
+  "description": "The atomic unit of AIVS-1. A signed, AIS-1-bound document attesting an inference, its occurrence tier, and the value independently committed against it.",
+  "type": "object",
+  "required": [
+    "aivs",
+    "recordId",
+    "producerRef",
+    "subjectRef",
+    "occurrence",
+    "mintingEnclaveRef",
+    "timestamp",
+    "aas1RecordRef",
+    "revealedValue",
+    "signature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "aivs": {
+      "const": "0.1"
+    },
+    "recordId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ULID or UUID, unique within the producer."
+    },
+    "producerRef": {
+      "type": "string",
+      "pattern": "^did:ais1:[A-Za-z0-9._%-]+:[A-Za-z0-9._%-]+$"
+    },
+    "subjectRef": {
+      "type": "string",
+      "format": "uri",
+      "description": "AAS-1 Class A action or Class D determination."
+    },
+    "occurrence": {
+      "type": "object",
+      "required": [
+        "tier",
+        "evidenceRef",
+        "modelIdentityHash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tier": {
+          "type": "string",
+          "enum": [
+            "A0",
+            "A1",
+            "A2",
+            "A3"
+          ]
+        },
+        "evidenceRef": {
+          "type": "string",
+          "format": "uri"
+        },
+        "modelIdentityHash": {
+          "type": "string",
+          "pattern": "^sha256-[A-Za-z0-9+/=_-]+$"
+        },
+        "attestationService": {
+          "type": "string"
+        }
+      }
+    },
+    "mintingEnclaveRef": {
+      "type": "string",
+      "pattern": "^aes1:[A-Za-z0-9._-]+:.+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 with explicit offset. See docs/interop.md."
+    },
+    "aas1RecordRef": {
+      "type": "string",
+      "format": "uri"
+    },
+    "revealedValue": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "signal",
+          "components",
+          "committerRef",
+          "relatedParty",
+          "irrevocable",
+          "evidenceRef"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "signal": {
+            "type": "string",
+            "enum": [
+              "insurance",
+              "posted_stake",
+              "downstream_reliance",
+              "collateral",
+              "bonded_stake"
+            ],
+            "description": "Class of revealed-value signal. 'bonded_stake' is a deprecated alias for 'posted_stake' — 'bond' is reserved for the AIS-1 identity artefact."
+          },
+          "components": {
+            "type": "object",
+            "description": "The commitment as its constituent figures. Never a single derived scalar: a premium alone carries the insurer's loading and the market cycle."
+          },
+          "committerRef": {
+            "type": "string",
+            "pattern": "^did:ais1:[A-Za-z0-9._%-]+:[A-Za-z0-9._%-]+$",
+            "description": "AIS-1 DID of the committing party. MUST NOT equal producerRef."
+          },
+          "relatedParty": {
+            "type": "boolean",
+            "description": "True where committer and producer resolve to the same AIS-1 sponsor. A disclosure, not an exclusion: a qualifying related-party attribution can reach T1, but T2 requires at least one qualifying unrelated attribution."
+          },
+          "irrevocable": {
+            "type": "boolean",
+            "description": "The committer cannot unilaterally recover the amount — segregated, escrowed, or locked. Required for the attribution to qualify."
+          },
+          "triggerAuthority": {
+            "type": "string",
+            "pattern": "^did:ais1:[A-Za-z0-9._%-]+:[A-Za-z0-9._%-]+$",
+            "description": "Who determines forfeiture or loss. MUST NOT be the committer or the producer. Required where relatedParty is true; recommended always."
+          },
+          "commitmentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable identifier for the underlying commitment, so the same commitment is recognisable across every record citing it. Required where share is present."
+          },
+          "share": {
+            "type": "string",
+            "pattern": "^(0(\\.[0-9]+)?|1(\\.0+)?)$",
+            "description": "Proportion of the commitment attributed to this inference, as stated by the committer. Absent means 1. Shares across all records citing the same commitmentId MUST NOT exceed 1."
+          },
+          "evidenceRef": {
+            "type": "string",
+            "format": "uri"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "dependentRequired": {
+          "share": [
+            "commitmentId"
+          ]
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "relatedParty": {
+                  "const": true
+                }
+              },
+              "required": [
+                "relatedParty"
+              ]
+            },
+            "then": {
+              "required": [
+                "triggerAuthority"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "signal": {
+                  "const": "insurance"
+                }
+              },
+              "required": [
+                "signal"
+              ]
+            },
+            "then": {
+              "properties": {
+                "components": {
+                  "type": "object",
+                  "required": [
+                    "premium",
+                    "perOccurrenceLimit",
+                    "periodStart",
+                    "periodEnd"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "premium": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "perOccurrenceLimit": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "aggregateLimit": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "deductible": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "periodStart": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "periodEnd": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "aipsCertificateId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "signal": {
+                  "enum": [
+                    "posted_stake",
+                    "bonded_stake"
+                  ]
+                }
+              },
+              "required": [
+                "signal"
+              ]
+            },
+            "then": {
+              "properties": {
+                "components": {
+                  "type": "object",
+                  "required": [
+                    "amount",
+                    "custodyRef"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "amount": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "custodyRef": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Where the capital sits beyond the committer's reach."
+                    },
+                    "forfeitureConditionRef": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "lockedUntil": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "signal": {
+                  "const": "downstream_reliance"
+                }
+              },
+              "required": [
+                "signal"
+              ]
+            },
+            "then": {
+              "properties": {
+                "components": {
+                  "type": "object",
+                  "required": [
+                    "amount",
+                    "actionRef"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "amount": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "actionRef": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "relianceStatementRef": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "signal": {
+                  "const": "collateral"
+                }
+              },
+              "required": [
+                "signal"
+              ]
+            },
+            "then": {
+              "properties": {
+                "components": {
+                  "type": "object",
+                  "required": [
+                    "amount",
+                    "lockRef"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "amount": {
+                      "type": "object",
+                      "required": [
+                        "currency",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "currency": {
+                          "type": "string",
+                          "pattern": "^[A-Z]{3}$"
+                        },
+                        "value": {
+                          "type": "string",
+                          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                          "description": "Decimal string. Not a float — floats are not canonicalisable."
+                        }
+                      }
+                    },
+                    "lockRef": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "releaseCondition": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "valueClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional. Comparability class. Self-declared classes cannot be relied on for pooling.",
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "self_declared",
+            "benchmarked"
+          ]
+        },
+        "benchmarkRef": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "class",
+        "basis"
+      ]
+    },
+    "transferTier": {
+      "type": "string",
+      "enum": [
+        "T0",
+        "T1",
+        "T2"
+      ],
+      "readOnly": true,
+      "description": "Derived. Verifiers MUST recompute and MUST NOT trust this field."
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "alg",
+        "hashAlg",
+        "canonicalisation",
+        "keyRef",
+        "value"
+      ],
+      "additionalProperties": false,
+      "description": "Structurally identical to AAS-1 6.3.",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "enum": [
+            "EdDSA",
+            "ES256K",
+            "ES256"
+          ]
+        },
+        "hashAlg": {
+          "type": "string",
+          "enum": [
+            "SHA-256"
+          ]
+        },
+        "canonicalisation": {
+          "type": "string",
+          "enum": [
+            "JCS"
+          ]
+        },
+        "keyRef": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

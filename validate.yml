@@ -1,0 +1,76 @@
+name: Validate records
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install ajv
+        run: npm install -g ajv-cli ajv-formats
+      - name: Validate Inference Value Records
+        run: |
+          for f in examples/ivr-*.json; do
+            echo "validating $f"
+            ajv validate --spec=draft2020 -c ajv-formats \
+              -s schemas/aivs-1-ivr.schema.json -d "$f"
+          done
+      - name: Validate Outcome Records (draft)
+        run: |
+          for f in examples/outcome-*.json; do
+            echo "validating $f"
+            ajv validate --spec=draft2020 -c ajv-formats \
+              -s schemas/aivs-1-outcome.schema.json -d "$f"
+          done
+
+  invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independence, trigger authority, and apportionment
+        run: |
+          python3 - <<'PY'
+          import json, glob, sys
+          from collections import defaultdict
+          from decimal import Decimal
+
+          bad = 0
+          shares = defaultdict(Decimal)
+
+          for f in sorted(glob.glob('examples/ivr-*.json')):
+              r = json.load(open(f))
+              for a in r['revealedValue']:
+
+                  # a producer cannot value its own inference
+                  if a['committerRef'] == r['producerRef']:
+                      print(f"{f}: producer valued its own inference"); bad = 1
+
+                  # trigger authority must be independent of both
+                  ta = a.get('triggerAuthority')
+                  if ta and ta in (a['committerRef'], r['producerRef']):
+                      print(f"{f}: triggerAuthority is not independent"); bad = 1
+
+                  # related-party attributions require a trigger authority
+                  if a['relatedParty'] and not ta:
+                      print(f"{f}: related-party attribution without triggerAuthority"); bad = 1
+
+                  # accumulate apportioned shares per commitment
+                  if 'share' in a:
+                      shares[a['commitmentId']] += Decimal(a['share'])
+
+          # no commitment may be attributed more than once over
+          for cid, total in shares.items():
+              if total > Decimal('1'):
+                  print(f"commitment over-attributed: {cid} sums to {total}"); bad = 1
+              else:
+                  print(f"ok  {cid} sums to {total}")
+
+          sys.exit(bad)
+          PY

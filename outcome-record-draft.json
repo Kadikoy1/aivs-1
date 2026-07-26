@@ -1,0 +1,28 @@
+{
+  "aivs": "0.2-draft",
+  "recordId": "01J2A4B7C9D1E3F5G7H9J1K3M5",
+  "class": "outcome",
+  "ivrRef": "https://records.payagent.ai/aivs1/01J1ZQ8K5N9PQX3YR4WMVT8CDA.json",
+  "ivrHash": "sha256-4f3edf8c1a2b9d7e6c5b4a39281706f5e4d3c2b1a0998877665544332211ff00",
+  "outcome": "held",
+  "realised": [
+    {
+      "signal": "insurance",
+      "amount": {
+        "currency": "USD",
+        "value": "0.00"
+      },
+      "evidenceRef": "https://claims.example-captive.bm/aips1/nil-return-2027-06.json"
+    }
+  ],
+  "determinedBy": "did:ais1:sponsor:auditor-firm-bermuda-example",
+  "determinationRef": "https://audits.example.com/determinations/01HZB7K5N9PQX3YR4WMVT8CDAS.json",
+  "timestamp": "2027-06-30T16:00:00Z",
+  "signature": {
+    "alg": "EdDSA",
+    "hashAlg": "SHA-256",
+    "canonicalisation": "JCS",
+    "keyRef": "did:ais1:sponsor:auditor-firm-bermuda-example#key-1",
+    "value": "z9QmR4tYu7Ip2Oa5Sd8Fg1Hj3Kl6Zx9Cv2Bn5Mq8Wr1Et4Yu7Io0Pa3Sd6Fg9Hj"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "aivs": "0.1",
+  "recordId": "01J1ZQ9M6P0RSY4ZS5XNWU9DEB",
+  "producerRef": "did:ais1:base:humphrey-soa-001",
+  "subjectRef": "https://logs.payagent.ai/2026/06/aas1-01J1ZQ9M6P0RSY4ZS5XNWU9DEC.json",
+  "occurrence": {
+    "tier": "A0",
+    "evidenceRef": "https://logs.payagent.ai/2026/06/self-attestation-0442.json",
+    "modelIdentityHash": "sha256-1a2b3c4d5e6f708192a3b4c5d6e7f80912a3b4c5d6e7f8091a2b3c4d5e6f7081"
+  },
+  "mintingEnclaveRef": "aes1:base:0x9a8b7c6d5e4f30211f0e9d8c7b6a594837261504",
+  "timestamp": "2026-06-18T11:02:47Z",
+  "aas1RecordRef": "https://logs.payagent.ai/2026/06/aas1-01J1ZQ9M6P0RSY4ZS5XNWU9DED.json",
+  "revealedValue": [
+    {
+      "signal": "downstream_reliance",
+      "components": {
+        "amount": {
+          "currency": "USD",
+          "value": "4200.00"
+        },
+        "actionRef": "https://logs.payagent.ai/2026/06/reliance-0117.json"
+      },
+      "committerRef": "did:ais1:sponsor:kadikoy-bm-202302362",
+      "relatedParty": true,
+      "evidenceRef": "https://logs.payagent.ai/2026/06/reliance-0117.json",
+      "note": "Related party and revocable — recorded and disclosed, but does not qualify. A0 occurrence caps this at T0 regardless.",
+      "irrevocable": false,
+      "triggerAuthority": "did:ais1:sponsor:auditor-firm-bermuda-example"
+    }
+  ],
+  "transferTier": "T0",
+  "signature": {
+    "alg": "EdDSA",
+    "hashAlg": "SHA-256",
+    "canonicalisation": "JCS",
+    "keyRef": "did:ais1:base:humphrey-soa-001#key-1",
+    "value": "z3KpL8vNq2Wx5Ty7Bd4Hf1Jm9Sc6Rz0Ug3Ea8Pv2Nb5Kd7Cf1Lh4Mj6Qs9Tw2Yx"
+  }
+}

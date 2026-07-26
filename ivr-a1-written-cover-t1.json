@@ -1,0 +1,59 @@
+{
+  "aivs": "0.1",
+  "recordId": "01J1ZQ8K5N9PQX3YR4WMVT8CDA",
+  "producerRef": "did:ais1:base:payagent-001",
+  "subjectRef": "https://logs.payagent.ai/2026/06/aas1-01HZB7K5N9PQX3YR4WMVT8CDA.json",
+  "occurrence": {
+    "tier": "A1",
+    "evidenceRef": "ipfs://bafybeigdyrztfnwodeterminationquoteexample001",
+    "modelIdentityHash": "sha256-9f2a4c1e8b7d6503a1f4e29c8d7b6a5049e3c2f1a8b7d6c5e4f3a2b1c0d9e8f7",
+    "attestationService": "aws-nitro-enclaves"
+  },
+  "mintingEnclaveRef": "aes1:base:0x4f3edf8c1a2b9d7e6c5b4a39281706f5e4d3c2b1",
+  "timestamp": "2026-06-17T09:14:22Z",
+  "aas1RecordRef": "https://logs.payagent.ai/2026/06/aas1-01J1ZQ8K5N9PQX3YR4WMVT8CDB.json",
+  "revealedValue": [
+    {
+      "signal": "insurance",
+      "components": {
+        "premium": {
+          "currency": "USD",
+          "value": "18500.00"
+        },
+        "perOccurrenceLimit": {
+          "currency": "USD",
+          "value": "1000000.00"
+        },
+        "aggregateLimit": {
+          "currency": "USD",
+          "value": "5000000.00"
+        },
+        "deductible": {
+          "currency": "USD",
+          "value": "25000.00"
+        },
+        "periodStart": "2026-06-06",
+        "periodEnd": "2027-06-06",
+        "aipsCertificateId": "aips1:base:0x4f3edf:001"
+      },
+      "committerRef": "did:ais1:sponsor:bermuda-captive-issuer-example",
+      "relatedParty": false,
+      "evidenceRef": "https://certs.example-captive.bm/aips1/0x4f3edf-001.json",
+      "note": "Components recorded, not collapsed. Rate on line derivable: 0.0185.",
+      "irrevocable": true,
+      "triggerAuthority": "did:ais1:sponsor:auditor-firm-bermuda-example"
+    }
+  ],
+  "valueClass": {
+    "class": "financial-determination/counterparty-screening",
+    "basis": "self_declared"
+  },
+  "transferTier": "T1",
+  "signature": {
+    "alg": "EdDSA",
+    "hashAlg": "SHA-256",
+    "canonicalisation": "JCS",
+    "keyRef": "did:ais1:base:payagent-001#key-1",
+    "value": "z7HwQ2mNp4Kx8Lv3Rt6Yb9Cd1Fg5Hj0Sn2Wq4Ez7Ux3Mv6Pa8Db1Kc5Nf9Rg2Th"
+  }
+}

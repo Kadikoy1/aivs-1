@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aivs-1.org/schemas/aivs-1-outcome.schema.json",
+  "title": "AIVS-1 Outcome Record (DRAFT — v0.2)",
+  "description": "DRAFT, NOT NORMATIVE IN v0.1. Immutable follow-on record closing the ex-ante / ex-post loop on an IVR.",
+  "type": "object",
+  "required": [
+    "aivs",
+    "recordId",
+    "class",
+    "ivrRef",
+    "ivrHash",
+    "outcome",
+    "determinedBy",
+    "timestamp",
+    "signature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "aivs": {
+      "const": "0.2-draft"
+    },
+    "recordId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "class": {
+      "const": "outcome"
+    },
+    "ivrRef": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ivrHash": {
+      "type": "string",
+      "pattern": "^sha256-[A-Za-z0-9+/=_-]+$",
+      "description": "Binds to a specific IVR by canonical hash."
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "held",
+        "failed",
+        "partially_held",
+        "undetermined",
+        "not_tested"
+      ],
+      "description": "Whether the inference held. 'not_tested' where no event ever engaged it — the common case, and recording it matters."
+    },
+    "realised": {
+      "type": "array",
+      "description": "What actually moved, against what was committed ex ante.",
+      "items": {
+        "type": "object",
+        "required": [
+          "signal",
+          "amount"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "signal": {
+            "type": "string",
+            "enum": [
+              "insurance",
+              "posted_stake",
+              "downstream_reliance",
+              "collateral",
+              "bonded_stake"
+            ]
+          },
+          "amount": {
+            "type": "object",
+            "required": [
+              "currency",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "currency": {
+                "type": "string",
+                "pattern": "^[A-Z]{3}$",
+                "description": "ISO 4217 alpha code."
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^[0-9]+(\\.[0-9]+)?$",
+                "description": "Decimal string. Not a float — floats are not canonicalisable."
+              }
+            }
+          },
+          "evidenceRef": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "determinedBy": {
+      "type": "string",
+      "pattern": "^did:ais1:[A-Za-z0-9._%-]+:[A-Za-z0-9._%-]+$",
+      "description": "Who determined the outcome. Not the producer."
+    },
+    "determinationRef": {
+      "type": "string",
+      "format": "uri",
+      "description": "AAS-1 Class D determination or ADFACS-1 Class D, where applicable."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "alg",
+        "hashAlg",
+        "canonicalisation",
+        "keyRef",
+        "value"
+      ],
+      "additionalProperties": false,
+      "description": "Structurally identical to AAS-1 6.3.",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "enum": [
+            "EdDSA",
+            "ES256K",
+            "ES256"
+          ]
+        },
+        "hashAlg": {
+          "type": "string",
+          "enum": [
+            "SHA-256"
+          ]
+        },
+        "canonicalisation": {
+          "type": "string",
+          "enum": [
+            "JCS"
+          ]
+        },
+        "keyRef": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
